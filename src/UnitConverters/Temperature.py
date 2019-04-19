@@ -15,7 +15,7 @@ class Temperature:
         :param value: input value
         :param unit: input unit (c,f)
         :return: The conversion in the other unit
-        :raises ValueError: if unit is invalid
+        :raises ValueError: if unit is invalid or temperature under absolute zero is given
         """
         if unit == "f":
             if value < -459.67:
@@ -35,7 +35,7 @@ class Temperature:
         :param value: input value
         :param unit: input unit (c,k)
         :return: The conversion in the other unit
-        :raises ValueError: if unit is invalid
+        :raises ValueError: if unit is invalid or temperature under absolute zero is given
         """
         if unit == "k":
             if value < 0:
@@ -55,7 +55,7 @@ class Temperature:
         :param value: input value
         :param unit: input unit (f, k)
         :return: The conversion in the other unit
-        :raises ValueError: if unit is invalid
+        :raises ValueError: if unit is invalid or temperature under absolute zero is given
         """
         if unit == "f":
             if value < -459.67:
