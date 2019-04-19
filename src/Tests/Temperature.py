@@ -21,6 +21,16 @@ class TemperatureTest(unittest.TestCase):
         # float fahrenheit to celsius
         self.assertEqual(Temperature.celsius_and_fahrenheit(122.54, "f"), 50.3)
 
+    def test_celsius_and_kelvin(self):
+        # int celsius to kelvin
+        self.assertEqual(Temperature.celsius_and_kelvin(20, "c"), 293.15)
+        # float celsius to kelvin
+        self.assertEqual(Temperature.celsius_and_kelvin(-72.82, "c"), 200.33)
+        # int kelvin to celsius
+        self.assertEqual(Temperature.celsius_and_kelvin(293.15, "k"), 20)
+        # float kelvin to celsius
+        self.assertEqual(Temperature.celsius_and_kelvin(200.33, "k"), -72.82)
+
 
 if __name__ == '__main__':
     unittest.main()
