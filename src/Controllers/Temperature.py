@@ -5,7 +5,7 @@ UniversalUnitConverter
 @author: Lisca Alexandru Iosif
 
 """
-from UnitConverters.Temperature import Temperature as t
+from UnitConverters.Temperature import Temperature
 
 
 class ControllerTemperature:
@@ -25,12 +25,12 @@ class ControllerTemperature:
         :raises ValueError: if either of the units is invalid or the given temperature is below absolute zero
         """
         converter = {
-            ('f', 'c'): t.celsius_and_fahrenheit(value, 'f'),
-            ('c', 'f'): t.celsius_and_fahrenheit(value, 'c'),
-            ('c', 'k'): t.celsius_and_kelvin(value, 'c'),
-            ('k', 'c'): t.celsius_and_kelvin(value, 'k'),
-            ('f', 'k'): t.fahrenheit_and_kelvin(value, 'f'),
-            ('k', 'f'): t.fahrenheit_and_kelvin(value, 'k')
+            ('f', 'c'): Temperature.celsius_and_fahrenheit(value, 'f'),
+            ('c', 'f'): Temperature.celsius_and_fahrenheit(value, 'c'),
+            ('c', 'k'): Temperature.celsius_and_kelvin(value, 'c'),
+            ('k', 'c'): Temperature.celsius_and_kelvin(value, 'k'),
+            ('f', 'k'): Temperature.fahrenheit_and_kelvin(value, 'f'),
+            ('k', 'f'): Temperature.fahrenheit_and_kelvin(value, 'k')
             }
         if (input_unit, output_unit) in converter:
             return converter[(input_unit, output_unit)]
