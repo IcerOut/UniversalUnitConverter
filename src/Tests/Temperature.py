@@ -6,8 +6,10 @@ UniversalUnitConverter
 
 """
 
-from UnitConverters.Temperature import Temperature
 import unittest
+
+from Controllers.Temperature import ControllerTemperature
+from UnitConverters.Temperature import Temperature
 
 
 class TemperatureTest(unittest.TestCase):
@@ -40,6 +42,20 @@ class TemperatureTest(unittest.TestCase):
         self.assertEqual(Temperature.fahrenheit_and_kelvin(300, "k"), 80.33)
         # float kelvin to fahrenheit
         self.assertEqual(Temperature.fahrenheit_and_kelvin(220.5, "k"), -62.77)
+
+    def test_controller(self):
+        # int celsius to fahrenheit
+        self.assertEqual(ControllerTemperature.convert(20, 'c', 'f'), 68)
+        # int fahrenheit to celsius
+        self.assertEqual(ControllerTemperature.convert(68, 'f', 'c'), 20)
+        # int celsius to kelvin
+        self.assertEqual(ControllerTemperature.convert(20, 'c', 'k'), 293.15)
+        # int kelvin to celsius
+        self.assertEqual(ControllerTemperature.convert(293.15, 'k', 'c'), 20)
+        # int fahrenheit to kelvin
+        self.assertEqual(ControllerTemperature.convert(80.33, 'f', 'k'), 300)
+        # int kelvin to fahrenheit
+        self.assertEqual(ControllerTemperature.convert(300, 'k', 'f'), 80.33)
 
 
 if __name__ == '__main__':
