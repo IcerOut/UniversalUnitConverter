@@ -24,6 +24,9 @@ class ControllerTemperature:
         :return: A float representing the conversion in the desired output unit
         :raises ValueError: if either of the units is invalid or the given temperature is below absolute zero
         """
+        if input_unit == output_unit:
+            return round(value, 2)
+
         converter = {
             ('f', 'c'): Temperature.celsius_and_fahrenheit(value, 'f'),
             ('c', 'f'): Temperature.celsius_and_fahrenheit(value, 'c'),
