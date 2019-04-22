@@ -6,4 +6,6 @@ UniversalUnitConverter
 
 """
 
-pass
+DOMAIN_TO_LIST = {
+    "Temperature": ['°C', '°F', 'K']
+    }

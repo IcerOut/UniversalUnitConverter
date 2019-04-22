@@ -9,9 +9,7 @@ UniversalUnitConverter
 import tkinter as tk
 
 # from Controllers.Temperature import ControllerTemperature
-
-OPTIONS = ['1', '2', '3']
-
+from global_variables import DOMAIN_TO_LIST
 
 class GUI:
     """
@@ -21,6 +19,11 @@ class GUI:
     def __init__(self, master):
         self.master = master
         master.title("UniversalUnitConverter version 0.1")
+        self.selected_domain = 'Temperature'
+
+        # When selecting a new domain:
+        self.options = DOMAIN_TO_LIST[self.selected_domain]
+        #
 
         #
         # Minimum size config
@@ -44,7 +47,7 @@ class GUI:
         # Top DropDown
         self.top_unit_choice = tk.StringVar(self.master)
         self.top_unit_choice.set('Choose a unit:')
-        self.top_dropdown = tk.OptionMenu(master, self.top_unit_choice, *OPTIONS)
+        self.top_dropdown = tk.OptionMenu(master, self.top_unit_choice, *self.options)
         self.top_dropdown.grid(row=1, column=5)
 
         #
@@ -61,7 +64,7 @@ class GUI:
         # Top DropDown
         self.bottom_unit_choice = tk.StringVar(self.master)
         self.bottom_unit_choice.set('Choose a unit:')
-        self.bottom_dropdown = tk.OptionMenu(master, self.bottom_unit_choice, *OPTIONS)
+        self.bottom_dropdown = tk.OptionMenu(master, self.bottom_unit_choice, *self.options)
         self.bottom_dropdown.grid(row=3, column=5)
 
 
