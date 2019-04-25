@@ -22,6 +22,10 @@ class GUI:
     def __init__(self, master):
         self.master = master
         master.title("UniversalUnitConverter version 0.1")
+
+        self.top_full_input = []
+        self.bottom_full_input = []
+
         self.selected_domain = 'Temperature'
 
         # When selecting a new domain:
@@ -78,29 +82,69 @@ class GUI:
         :param is_top: Whether we want the top values
         :return: A list containing the textbox input and the dropdown choice
         """
-        try:
-            if is_top:
+        if is_top:
+            try:
                 return [float(self.top_textbox.get()), self.top_unit_choice.get()]
-            else:
+            except ValueError:
+                return [None, self.top_unit_choice.get()]
+        else:
+            try:
                 return [float(self.bottom_textbox.get()), self.bottom_unit_choice.get()]
-        except ValueError:
-            return None
+            except ValueError:
+                return [None, self.bottom_unit_choice.get()]
 
-    def check_input(self):
+    def update_conversion(self, is_top: bool) -> None:
+        """
+        Updates a conversion when the opposite one is changed by the user
+        :param is_top: Whether the top is being updated (Otherwise bottom)
+        :return: None
+        """
         top = self.get_input(True)
         bottom = self.get_input(False)
-        print(top, bottom)
-        if top is not None and bottom is not None and top[1] != PLACEHOLDER and bottom[1] != PLACEHOLDER:
-            print("YES")
+        if is_top:
+            side, opposite, opposite_value = top, bottom, self.bottom_value
+        else:
+            side, opposite, opposite_value = bottom, top, self.top_value
+        if side[0] is not None and top[1] != PLACEHOLDER and bottom[1] != PLACEHOLDER:
+            try:
+                from_unit = ControllerTemperature.unit_name_to_code[side[1]]
+                to_unit = ControllerTemperature.unit_name_to_code[opposite[1]]
+                result = ControllerTemperature.convert(float(side[0]), from_unit, to_unit)
+                opposite_value.set(str(result))
+            except ValueError:
+                pass
+
+    def updated_top(self, a, b, c):
+        self.update_conversion(True)
+
+    def updated_bottom(self, a, b, c):
+        self.update_conversion(False)
+
+    def continuous_conversion(self):
+        top = self.get_input(True)
+        bottom = self.get_input(False)
+        if top[0] is not None and top[1] != PLACEHOLDER and bottom[1] != PLACEHOLDER and top != self.top_full_input:
+            print("TOP CHANGED")
+            self.top_full_input = top.copy()
             try:
                 from_unit = ControllerTemperature.unit_name_to_code[top[1]]
                 to_unit = ControllerTemperature.unit_name_to_code[bottom[1]]
                 result = ControllerTemperature.convert(float(top[0]), from_unit, to_unit)
-                print(result)
                 self.bottom_value.set(str(result))
             except ValueError:
                 pass
-        self.master.after(700, self.check_input)
+        elif bottom[0] is not None and top[1] != PLACEHOLDER and \
+                bottom[1] != PLACEHOLDER and bottom != self.bottom_full_input:
+            print("BOTTOM CHANGED")
+            self.bottom_full_input = bottom.copy()
+            try:
+                from_unit = ControllerTemperature.unit_name_to_code[bottom[1]]
+                to_unit = ControllerTemperature.unit_name_to_code[top[1]]
+                result = ControllerTemperature.convert(float(bottom[0]), from_unit, to_unit)
+                self.top_value.set(str(result))
+            except ValueError:
+                pass
+        self.master.after(1500, self.continuous_conversion)
 
 
 root = tk.Tk()
