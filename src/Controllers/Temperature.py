@@ -14,6 +14,9 @@ class ControllerTemperature:
     It calls the appropriate function from UnitConverters depending on desired output
     """
 
+    code_to_unit_name = {'c': '°C', 'f': '°F', 'k': 'K'}
+    unit_name_to_code = {'°C': 'c', '°F': 'f', 'K': 'k'}
+
     @staticmethod
     def convert(value: float, input_unit: str, output_unit: str) -> float:
         """
@@ -34,7 +37,7 @@ class ControllerTemperature:
             ('k', 'c'): Temperature.celsius_and_kelvin(value, 'k'),
             ('f', 'k'): Temperature.fahrenheit_and_kelvin(value, 'f'),
             ('k', 'f'): Temperature.fahrenheit_and_kelvin(value, 'k')
-            }
+        }
         if (input_unit, output_unit) in converter:
             return converter[(input_unit, output_unit)]
         raise ValueError("Invalid units given!")

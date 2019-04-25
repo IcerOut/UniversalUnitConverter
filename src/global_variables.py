@@ -6,6 +6,8 @@ UniversalUnitConverter
 
 """
 
+PLACEHOLDER = 'Choose a unit:'
+
 DOMAIN_TO_LIST = {
     "Temperature": ['°C', '°F', 'K']
     }
