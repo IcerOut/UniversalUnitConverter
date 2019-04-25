@@ -91,12 +91,16 @@ class GUI:
         bottom = self.get_input(False)
         print(top, bottom)
         if top is not None and bottom is not None and top[1] != PLACEHOLDER and bottom[1] != PLACEHOLDER:
-            from_unit = ControllerTemperature.unit_name_to_code[top[1]]
-            to_unit = ControllerTemperature.unit_name_to_code[bottom[1]]
-            result = ControllerTemperature.convert(top[0], from_unit, to_unit)
-            print(result)
-            self.bottom_value.set(str(result))
-        self.master.after(1000, self.check_input)
+            print("YES")
+            try:
+                from_unit = ControllerTemperature.unit_name_to_code[top[1]]
+                to_unit = ControllerTemperature.unit_name_to_code[bottom[1]]
+                result = ControllerTemperature.convert(float(top[0]), from_unit, to_unit)
+                print(result)
+                self.bottom_value.set(str(result))
+            except ValueError:
+                pass
+        self.master.after(700, self.check_input)
 
 
 root = tk.Tk()

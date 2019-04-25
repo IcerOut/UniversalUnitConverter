@@ -31,13 +31,14 @@ class ControllerTemperature:
             return round(value, 2)
 
         converter = {
-            ('f', 'c'): Temperature.celsius_and_fahrenheit(value, 'f'),
-            ('c', 'f'): Temperature.celsius_and_fahrenheit(value, 'c'),
-            ('c', 'k'): Temperature.celsius_and_kelvin(value, 'c'),
-            ('k', 'c'): Temperature.celsius_and_kelvin(value, 'k'),
-            ('f', 'k'): Temperature.fahrenheit_and_kelvin(value, 'f'),
-            ('k', 'f'): Temperature.fahrenheit_and_kelvin(value, 'k')
+            ('f', 'c'): [Temperature.celsius_and_fahrenheit, value, 'f'],
+            ('c', 'f'): [Temperature.celsius_and_fahrenheit, value, 'c'],
+            ('c', 'k'): [Temperature.celsius_and_kelvin, value, 'c'],
+            ('k', 'c'): [Temperature.celsius_and_kelvin, value, 'k'],
+            ('f', 'k'): [Temperature.fahrenheit_and_kelvin, value, 'f'],
+            ('k', 'f'): [Temperature.fahrenheit_and_kelvin, value, 'k']
         }
         if (input_unit, output_unit) in converter:
-            return converter[(input_unit, output_unit)]
+            function_with_params = converter[(input_unit, output_unit)]
+            return function_with_params[0](function_with_params[1], function_with_params[2])
         raise ValueError("Invalid units given!")
