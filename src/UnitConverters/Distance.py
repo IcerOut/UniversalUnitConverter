@@ -7,7 +7,7 @@ UniversalUnitConverter
 """
 
 
-class Temperature:
+class Distance:
     @staticmethod
     def kilometer_and_mile(value: float, unit: str) -> float:
         if unit == "km":  # convert to mile
