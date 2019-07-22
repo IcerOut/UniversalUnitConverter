@@ -8,8 +8,8 @@ UniversalUnitConverter
 
 import unittest
 
-from Controllers.Temperature import ControllerTemperature
-from UnitConverters.Temperature import Temperature
+from src.Controllers.Temperature import ControllerTemperature
+from src.UnitConverters.Temperature import Temperature
 
 
 class TemperatureTest(unittest.TestCase):

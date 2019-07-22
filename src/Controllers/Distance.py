@@ -5,7 +5,7 @@ UniversalUnitConverter
 @author: Lisca Alexandru Iosif
 
 """
-from UniversalUnitConverter.src.UnitConverters.Distance import Distance
+from src.UniversalUnitConverter.src.UnitConverters.Distance import Distance
 
 
 class ControllerDistance:

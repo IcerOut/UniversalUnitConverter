@@ -5,7 +5,7 @@ UniversalUnitConverter
 @author: Lisca Alexandru Iosif
 
 """
-from UnitConverters.Temperature import Temperature
+from src.UnitConverters.Temperature import Temperature
 
 
 class ControllerTemperature:

@@ -5,7 +5,7 @@ UniversalUnitConverter
 @author: Lisca Alexandru Iosif
 
 """
-from UI.GUI import GUI, root
+from src.UI.GUI import GUI, root
 
 if __name__ == '__main__':
     my_gui = GUI(root)

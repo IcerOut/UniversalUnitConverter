@@ -10,8 +10,8 @@ import tkinter as tk
 
 from typing import List
 
-from Controllers.Temperature import ControllerTemperature
-from global_variables import DOMAIN_TO_LIST, PLACEHOLDER
+from src.Controllers.Temperature import ControllerTemperature
+from src.global_variables import DOMAIN_TO_LIST, PLACEHOLDER
 
 
 class GUI:
