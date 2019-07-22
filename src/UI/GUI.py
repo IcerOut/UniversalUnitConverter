@@ -10,8 +10,8 @@ import tkinter as tk
 from typing import List
 
 from src.Controllers.Temperature import ControllerTemperature
-from src.global_variables import DISCORD_DARK, DISCORD_DARK_HOVER, DISCORD_LIGHT, DOMAIN_TO_LIST, \
-    DROPDOWN_DEFAULT_TEXT
+from src.global_variables import DISCORD_DARK, DISCORD_DARK_HOVER, DISCORD_LIGHT, DISCORD_TEXTBOX, \
+    DOMAIN_TO_LIST, DROPDOWN_DEFAULT_TEXT, ROWSIZE, COLUMNSIZE
 
 
 class GUI:
@@ -35,24 +35,25 @@ class GUI:
         #
         # Minimum size config
         for x in range(5):
-            self.master.grid_rowconfigure(x, minsize=50, weight=1)
+            self.master.grid_rowconfigure(x, minsize=ROWSIZE[x], weight=1)
 
-        for y in range(7):
-            self.master.grid_columnconfigure(y, minsize=120, weight=1)
+        for y in range(6):
+            self.master.grid_columnconfigure(y, minsize=COLUMNSIZE[y], weight=1)
 
         #
         # Placeholder
         self.placeholder_label = tk.Label(
                 self.master, text="THIS\nIS\nA\nPLACEHOLDER\nFOR\nTHE\nUNITS\nSELECTION",
                 fg=DISCORD_LIGHT, bg=DISCORD_DARK, font=('Verdana', 36))
-        self.placeholder_label.grid(row=0, rowspan=5, column=0, columnspan=2)
+        self.placeholder_label.grid(row=0, rowspan=5, column=0)
 
         #
         # Top TextBox
         self.top_value = tk.StringVar(self.master)
         self.top_textbox = tk.Entry(self.master, textvariable=self.top_value,
-                                    font=('Verdana', 24), width=7)
-        self.top_textbox.grid(row=1, column=3)
+                                    font=('Verdana', 24), width=7, fg=DISCORD_LIGHT,
+                                    bg=DISCORD_TEXTBOX)
+        self.top_textbox.grid(row=1, column=2)
 
         #
         # Top DropDown
@@ -60,25 +61,26 @@ class GUI:
         self.top_unit_choice.set(DROPDOWN_DEFAULT_TEXT)
         self.top_dropdown = tk.OptionMenu(master, self.top_unit_choice, *self.options)
         self.top_dropdown.configure(font=('Verdana', 24), fg=DISCORD_LIGHT, bg=DISCORD_DARK,
-                                    highlightbackground=DISCORD_DARK, activeforeground='white',
+                                    highlightthickness=0, activeforeground='white',
                                     activebackground=DISCORD_DARK_HOVER)
         self.top_dropdown['menu'].configure(font=('Verdana', 24), fg=DISCORD_LIGHT, bg=DISCORD_DARK,
                                             activeforeground='white',
                                             activebackground=DISCORD_DARK_HOVER)
-        self.top_dropdown.grid(row=1, column=5)
+        self.top_dropdown.grid(row=1, column=4)
 
         #
         # Equal Sign
         self.equal_sign = tk.Label(master, text="=", font=('Verdana', 48), fg=DISCORD_LIGHT,
                                    bg=DISCORD_DARK)
-        self.equal_sign.grid(row=2, column=4)
+        self.equal_sign.grid(row=2, column=3)
 
         #
         # Bottom TextBox
         self.bottom_value = tk.StringVar(self.master)
         self.bottom_textbox = tk.Entry(self.master, textvariable=self.bottom_value,
-                                       font=('Verdana', 24), width=7)
-        self.bottom_textbox.grid(row=3, column=3)
+                                       font=('Verdana', 24), width=7, fg=DISCORD_LIGHT,
+                                       bg=DISCORD_TEXTBOX)
+        self.bottom_textbox.grid(row=3, column=2)
 
         #
         # Bottom DropDown
@@ -86,13 +88,13 @@ class GUI:
         self.bottom_unit_choice.set(DROPDOWN_DEFAULT_TEXT)
         self.bottom_dropdown = tk.OptionMenu(master, self.bottom_unit_choice, *self.options)
         self.bottom_dropdown.configure(font=('Verdana', 24), fg=DISCORD_LIGHT, bg=DISCORD_DARK,
-                                       highlightbackground=DISCORD_DARK, activeforeground='white',
+                                       highlightthickness=0, activeforeground='white',
                                        activebackground=DISCORD_DARK_HOVER)
         self.bottom_dropdown['menu'].configure(font=('Verdana', 24), fg=DISCORD_LIGHT,
                                                bg=DISCORD_DARK,
                                                activeforeground='white',
                                                activebackground=DISCORD_DARK_HOVER)
-        self.bottom_dropdown.grid(row=3, column=5)
+        self.bottom_dropdown.grid(row=3, column=4)
 
     def get_input(self, is_top: bool) -> List[float and str] or None:
         """
