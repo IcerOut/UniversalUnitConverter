@@ -10,8 +10,8 @@ import tkinter as tk
 from typing import List
 
 from src.Controllers.Temperature import ControllerTemperature
-from src.global_variables import DISCORD_DARK, DISCORD_DARK_HOVER, DISCORD_LIGHT, DISCORD_TEXTBOX, \
-    DOMAIN_TO_LIST, DROPDOWN_DEFAULT_TEXT, ROWSIZE, COLUMNSIZE
+from src.global_variables import COLUMNSIZE, DISCORD_DARK, DISCORD_DARK_HOVER, DISCORD_LIGHT, \
+    DISCORD_TEXTBOX, DOMAIN_TO_LIST, DROPDOWN_DEFAULT_TEXT, ROWSIZE
 
 
 class GUI:
@@ -23,8 +23,9 @@ class GUI:
         self.master = master
         master.title("UniversalUnitConverter version 0.1")
 
-        self.top_full_input = []
-        self.bottom_full_input = []
+        self.master.configure(bg=DISCORD_DARK)
+
+        self.full_input = []
 
         self.selected_domain = 'Temperature'
 
@@ -78,8 +79,10 @@ class GUI:
         # Bottom TextBox
         self.bottom_value = tk.StringVar(self.master)
         self.bottom_textbox = tk.Entry(self.master, textvariable=self.bottom_value,
-                                       font=('Verdana', 24), width=7, fg=DISCORD_LIGHT,
-                                       bg=DISCORD_TEXTBOX)
+                                       font=('Verdana', 24), width=7, state='disabled')
+        self.bottom_textbox.configure(disabledforeground=DISCORD_LIGHT,
+                                      disabledbackground=DISCORD_TEXTBOX)
+        self.bottom_textbox.bind("<Button-1>", self.copy_result_to_clipboard)
         self.bottom_textbox.grid(row=3, column=2)
 
         #
@@ -96,78 +99,48 @@ class GUI:
                                                activebackground=DISCORD_DARK_HOVER)
         self.bottom_dropdown.grid(row=3, column=4)
 
-    def get_input(self, is_top: bool) -> List[float and str] or None:
+        self.continuous_conversion()
+
+    def get_input(self) -> List[float and str] or None:
         """
-        Returns the value and unit of one of the sides
-        :param is_top: Whether we want the top values
+        Returns the value and unit of the top
         :return: A list containing the textbox input and the dropdown choice
         """
-        if is_top:
-            try:
-                return [float(self.top_textbox.get()), self.top_unit_choice.get()]
-            except ValueError:
-                return [None, self.top_unit_choice.get()]
-        else:
-            try:
-                return [float(self.bottom_textbox.get()), self.bottom_unit_choice.get()]
-            except ValueError:
-                return [None, self.bottom_unit_choice.get()]
+        try:
+            return [float(self.top_textbox.get()), self.top_unit_choice.get()]
+        except ValueError:
+            return [None, self.top_unit_choice.get()]
 
-    def update_conversion(self, is_top: bool) -> None:
+    def copy_result_to_clipboard(self, dummy) -> None:
         """
-        Updates a conversion when the opposite one is changed by the user
-        :param is_top: Whether the top is being updated (Otherwise bottom)
-        :return: None
+        Copies the result of the conversion to the clipboard
+        This function is called whenever the bottom textbox is clicked
+        :param dummy: An object returned by the click bind. Not necessary for this function
         """
-        top = self.get_input(True)
-        bottom = self.get_input(False)
-        if is_top:
-            side, opposite, opposite_value = top, bottom, self.bottom_value
-        else:
-            side, opposite, opposite_value = bottom, top, self.top_value
-        if side[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and bottom[
-            1] != DROPDOWN_DEFAULT_TEXT:
-            try:
-                from_unit = ControllerTemperature.unit_name_to_code[side[1]]
-                to_unit = ControllerTemperature.unit_name_to_code[opposite[1]]
-                result = ControllerTemperature.convert(float(side[0]), from_unit, to_unit)
-                opposite_value.set(str(result))
-            except ValueError:
-                pass
+        print("Text copied to clipboard")
+        self.master.clipboard_clear()
+        self.master.clipboard_append(self.bottom_value.get())
+        self.master.update()
 
-    def updated_top(self, a, b, c):
-        self.update_conversion(True)
-
-    def updated_bottom(self, a, b, c):
-        self.update_conversion(False)
-
-    def continuous_conversion(self):
-        top = self.get_input(True)
-        bottom = self.get_input(False)
-        if top[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and bottom[
-            1] != DROPDOWN_DEFAULT_TEXT and top != self.top_full_input:
-            print("TOP CHANGED")
-            self.top_full_input = top.copy()
+    def continuous_conversion(self) -> None:
+        """
+        Continuously monitors the top textbox and dropdown for changes (every 0.5 seconds)
+        When it detects a change, it updates the bottom conversion
+        """
+        top = self.get_input()
+        bottom_unit = self.bottom_unit_choice.get()
+        if top[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and \
+                bottom_unit != DROPDOWN_DEFAULT_TEXT and [top, bottom_unit] != self.full_input:
+            print("Change detected, updating result...")
+            self.full_input = [top.copy(), bottom_unit]
             try:
                 from_unit = ControllerTemperature.unit_name_to_code[top[1]]
-                to_unit = ControllerTemperature.unit_name_to_code[bottom[1]]
+                to_unit = ControllerTemperature.unit_name_to_code[bottom_unit]
                 result = ControllerTemperature.convert(float(top[0]), from_unit, to_unit)
                 self.bottom_value.set(str(result))
             except ValueError:
                 pass
-        elif bottom[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and \
-                bottom[1] != DROPDOWN_DEFAULT_TEXT and bottom != self.bottom_full_input:
-            print("BOTTOM CHANGED")
-            self.bottom_full_input = bottom.copy()
-            try:
-                from_unit = ControllerTemperature.unit_name_to_code[bottom[1]]
-                to_unit = ControllerTemperature.unit_name_to_code[top[1]]
-                result = ControllerTemperature.convert(float(bottom[0]), from_unit, to_unit)
-                self.top_value.set(str(result))
-            except ValueError:
-                pass
-        self.master.after(1500, self.continuous_conversion)
+        self.master.after(500, self.continuous_conversion)
 
 
 root = tk.Tk()
-root.configure(bg=DISCORD_DARK)
