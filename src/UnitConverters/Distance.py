@@ -20,7 +20,7 @@ class Distance:
             return value / 0.62137
 
     @staticmethod
-    def centimeter_to_inch(value: float, unit: str) -> float:
+    def centimeter_and_inch(value: float, unit: str) -> float:
         if unit == "cm":  # convert to inch
             if value < 0:
                 raise ValueError("Distance cannot be lower than 0!")
@@ -31,7 +31,7 @@ class Distance:
             return value * 2.54
 
     @staticmethod
-    def foot_to_meter(value: float, unit: str) -> float:
+    def foot_and_meter(value: float, unit: str) -> float:
         if unit == "m":  # convert to foot
             if value < 0:
                 raise ValueError("Distance cannot be lower than 0!")
@@ -42,7 +42,7 @@ class Distance:
             return value * 3.28084
 
     @staticmethod
-    def yard_to_meter(value: float, unit: str) -> float:
+    def yard_and_meter(value: float, unit: str) -> float:
         if unit == "m":  # convert to yard
             if value < 0:
                 raise ValueError("Distance cannot be lower than 0!")
@@ -109,7 +109,7 @@ class Distance:
             return value / 63360
 
     @staticmethod
-    def foot_to_inch(value: float, unit: str) -> float:
+    def foot_and_inch(value: float, unit: str) -> float:
         if unit == "ft":  # convert to inch
             if value < 0:
                 raise ValueError("Distance cannot be lower than 0!")
@@ -120,7 +120,7 @@ class Distance:
             return value / 12
 
     @staticmethod
-    def foot_to_yard(value: float, unit: str) -> float:
+    def foot_and_yard(value: float, unit: str) -> float:
         if unit == "ft":  # convert to yard
             if value < 0:
                 raise ValueError("Distance cannot be lower than 0!")
@@ -131,7 +131,7 @@ class Distance:
             return value / 0.3333334
 
     @staticmethod
-    def inch_to_yard(value: float, unit: str) -> float:
+    def inch_and_yard(value: float, unit: str) -> float:
         if unit == "in":  # convert to yard
             if value < 0:
                 raise ValueError("Distance cannot be lower than 0!")
