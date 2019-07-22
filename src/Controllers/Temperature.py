@@ -25,7 +25,8 @@ class ControllerTemperature:
         :param input_unit: The unit used in the input
         :param output_unit: The desired unit
         :return: A float representing the conversion in the desired output unit
-        :raises ValueError: if either of the units is invalid or the given temperature is below absolute zero
+        :raises ValueError: if either of the units is invalid or the given temperature
+                            is below absolute zero
         """
         if input_unit == output_unit:
             return round(value, 2)
@@ -37,8 +38,9 @@ class ControllerTemperature:
             ('k', 'c'): [Temperature.celsius_and_kelvin, value, 'k'],
             ('f', 'k'): [Temperature.fahrenheit_and_kelvin, value, 'f'],
             ('k', 'f'): [Temperature.fahrenheit_and_kelvin, value, 'k']
-        }
+            }
         if (input_unit, output_unit) in converter:
             function_with_params = converter[(input_unit, output_unit)]
-            return function_with_params[0](function_with_params[1], function_with_params[2])
+            return round(function_with_params[0](function_with_params[1], function_with_params[2]),
+                         2)
         raise ValueError("Invalid units given!")

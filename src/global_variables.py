@@ -6,6 +6,9 @@ UniversalUnitConverter
 
 """
 # Windows Titlebar Title
+from src.Controllers.Distance import ControllerDistance
+from src.Controllers.Temperature import ControllerTemperature
+
 APP_TITLE = 'UniversalUnitConverter version 0.1'
 
 # Windows Titlebar Icon (location relative to main.py)
@@ -20,7 +23,13 @@ COLUMNSIZE = [350, 30, 100, 50, 100, 30]
 DROPDOWN_DEFAULT_TEXT = 'Choose a unit:'
 
 DOMAIN_TO_LIST = {
-    "Temperature": ['°C', '°F', 'K']
+    'Temperature': ['°C', '°F', 'K'],
+    'Distance': ['Kilometers', 'Miles', 'Nautical Miles', 'Feet', 'Meters', 'Yards', 'Inches']
+    }
+
+DOMAIN_TO_CONTROLLER = {
+    'Temperature': ControllerTemperature,
+    'Distance': ControllerDistance
     }
 
 DISCORD_DARK = '#2c2f33'

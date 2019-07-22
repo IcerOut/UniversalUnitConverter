@@ -9,7 +9,6 @@ UniversalUnitConverter
 import tkinter as tk
 from typing import List
 
-from src.Controllers.Temperature import ControllerTemperature
 from src.global_variables import *
 
 
@@ -27,7 +26,7 @@ class GUI:
 
         self.full_input = []
 
-        self.selected_domain = 'Temperature'
+        self.selected_domain = 'Distance'
 
         # When selecting a new domain:
         self.options = DOMAIN_TO_LIST[self.selected_domain]
@@ -136,9 +135,10 @@ class GUI:
             print("Change detected, updating result...")
             self.full_input = [top.copy(), bottom_unit]
             try:
-                from_unit = ControllerTemperature.unit_name_to_code[top[1]]
-                to_unit = ControllerTemperature.unit_name_to_code[bottom_unit]
-                result = ControllerTemperature.convert(float(top[0]), from_unit, to_unit)
+                from_unit = DOMAIN_TO_CONTROLLER[self.selected_domain].unit_name_to_code[top[1]]
+                to_unit = DOMAIN_TO_CONTROLLER[self.selected_domain].unit_name_to_code[bottom_unit]
+                result = DOMAIN_TO_CONTROLLER[self.selected_domain].convert(float(top[0]),
+                                                                            from_unit, to_unit)
                 self.bottom_value.set(str(result))
             except ValueError:
                 pass
