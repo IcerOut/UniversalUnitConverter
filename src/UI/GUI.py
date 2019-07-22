@@ -10,8 +10,7 @@ import tkinter as tk
 from typing import List
 
 from src.Controllers.Temperature import ControllerTemperature
-from src.global_variables import COLUMNSIZE, DISCORD_DARK, DISCORD_DARK_HOVER, DISCORD_LIGHT, \
-    DISCORD_TEXTBOX, DOMAIN_TO_LIST, DROPDOWN_DEFAULT_TEXT, ROWSIZE
+from src.global_variables import *
 
 
 class GUI:
@@ -21,7 +20,8 @@ class GUI:
 
     def __init__(self, master):
         self.master = master
-        master.title("UniversalUnitConverter version 0.1")
+        self.master.title(APP_TITLE)
+        self.master.wm_iconbitmap(bitmap=APP_ICON)
 
         self.master.configure(bg=DISCORD_DARK)
 
@@ -31,7 +31,6 @@ class GUI:
 
         # When selecting a new domain:
         self.options = DOMAIN_TO_LIST[self.selected_domain]
-        #
 
         #
         # Minimum size config
@@ -82,6 +81,7 @@ class GUI:
                                        font=('Verdana', 24), width=7, state='disabled')
         self.bottom_textbox.configure(disabledforeground=DISCORD_LIGHT,
                                       disabledbackground=DISCORD_TEXTBOX)
+        # On left click, calls the copy to clipboard function
         self.bottom_textbox.bind("<Button-1>", self.copy_result_to_clipboard)
         self.bottom_textbox.grid(row=3, column=2)
 
@@ -99,6 +99,7 @@ class GUI:
                                                activebackground=DISCORD_DARK_HOVER)
         self.bottom_dropdown.grid(row=3, column=4)
 
+        # Initial call of the function. Afterwards it will keep calling itself every 0.5 seconds
         self.continuous_conversion()
 
     def get_input(self) -> List[float and str] or None:
@@ -117,6 +118,7 @@ class GUI:
         This function is called whenever the bottom textbox is clicked
         :param dummy: An object returned by the click bind. Not necessary for this function
         """
+        # TODO: "Copied result to clipboard" message on the screen (?)
         print("Text copied to clipboard")
         self.master.clipboard_clear()
         self.master.clipboard_append(self.bottom_value.get())

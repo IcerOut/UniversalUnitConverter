@@ -5,6 +5,12 @@ UniversalUnitConverter
 @author: Lisca Alexandru Iosif
 
 """
+# Windows Titlebar Title
+APP_TITLE = 'UniversalUnitConverter version 0.1'
+
+# Windows Titlebar Icon (location relative to main.py)
+APP_ICON = 'img\\UUC.ico'
+
 # Rows: Free FirstRow Equal SecondRow Free
 ROWSIZE = [30, 50, 30, 50, 30]
 
