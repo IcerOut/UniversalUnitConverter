@@ -7,11 +7,11 @@ UniversalUnitConverter
 """
 
 import tkinter as tk
-
 from typing import List
 
 from src.Controllers.Temperature import ControllerTemperature
-from src.global_variables import DOMAIN_TO_LIST, PLACEHOLDER
+from src.global_variables import DISCORD_DARK, DISCORD_DARK_HOVER, DISCORD_LIGHT, DOMAIN_TO_LIST, \
+    DROPDOWN_DEFAULT_TEXT
 
 
 class GUI:
@@ -38,42 +38,60 @@ class GUI:
             self.master.grid_rowconfigure(x, minsize=50, weight=1)
 
         for y in range(7):
-            self.master.grid_columnconfigure(y, minsize=100, weight=1)
+            self.master.grid_columnconfigure(y, minsize=120, weight=1)
 
         #
         # Placeholder
-        self.placeholder_label = tk.Label(self.master, text="THIS\nIS\nA\nPLACEHOLDER\nFOR\nTHE\nUNITS\nSELECTION")
+        self.placeholder_label = tk.Label(
+                self.master, text="THIS\nIS\nA\nPLACEHOLDER\nFOR\nTHE\nUNITS\nSELECTION",
+                fg=DISCORD_LIGHT, bg=DISCORD_DARK, font=('Verdana', 36))
         self.placeholder_label.grid(row=0, rowspan=5, column=0, columnspan=2)
 
         #
         # Top TextBox
         self.top_value = tk.StringVar(self.master)
-        self.top_textbox = tk.Entry(self.master, textvariable=self.top_value)
+        self.top_textbox = tk.Entry(self.master, textvariable=self.top_value,
+                                    font=('Verdana', 24), width=7)
         self.top_textbox.grid(row=1, column=3)
 
         #
         # Top DropDown
         self.top_unit_choice = tk.StringVar(self.master)
-        self.top_unit_choice.set(PLACEHOLDER)
+        self.top_unit_choice.set(DROPDOWN_DEFAULT_TEXT)
         self.top_dropdown = tk.OptionMenu(master, self.top_unit_choice, *self.options)
+        self.top_dropdown.configure(font=('Verdana', 24), fg=DISCORD_LIGHT, bg=DISCORD_DARK,
+                                    highlightbackground=DISCORD_DARK, activeforeground='white',
+                                    activebackground=DISCORD_DARK_HOVER)
+        self.top_dropdown['menu'].configure(font=('Verdana', 24), fg=DISCORD_LIGHT, bg=DISCORD_DARK,
+                                            activeforeground='white',
+                                            activebackground=DISCORD_DARK_HOVER)
         self.top_dropdown.grid(row=1, column=5)
 
         #
         # Equal Sign
-        self.equal_sign = tk.Label(master, text="=")
+        self.equal_sign = tk.Label(master, text="=", font=('Verdana', 48), fg=DISCORD_LIGHT,
+                                   bg=DISCORD_DARK)
         self.equal_sign.grid(row=2, column=4)
 
         #
         # Bottom TextBox
         self.bottom_value = tk.StringVar(self.master)
-        self.bottom_textbox = tk.Entry(self.master, textvariable=self.bottom_value)
+        self.bottom_textbox = tk.Entry(self.master, textvariable=self.bottom_value,
+                                       font=('Verdana', 24), width=7)
         self.bottom_textbox.grid(row=3, column=3)
 
         #
         # Bottom DropDown
         self.bottom_unit_choice = tk.StringVar(self.master)
-        self.bottom_unit_choice.set(PLACEHOLDER)
+        self.bottom_unit_choice.set(DROPDOWN_DEFAULT_TEXT)
         self.bottom_dropdown = tk.OptionMenu(master, self.bottom_unit_choice, *self.options)
+        self.bottom_dropdown.configure(font=('Verdana', 24), fg=DISCORD_LIGHT, bg=DISCORD_DARK,
+                                       highlightbackground=DISCORD_DARK, activeforeground='white',
+                                       activebackground=DISCORD_DARK_HOVER)
+        self.bottom_dropdown['menu'].configure(font=('Verdana', 24), fg=DISCORD_LIGHT,
+                                               bg=DISCORD_DARK,
+                                               activeforeground='white',
+                                               activebackground=DISCORD_DARK_HOVER)
         self.bottom_dropdown.grid(row=3, column=5)
 
     def get_input(self, is_top: bool) -> List[float and str] or None:
@@ -105,7 +123,8 @@ class GUI:
             side, opposite, opposite_value = top, bottom, self.bottom_value
         else:
             side, opposite, opposite_value = bottom, top, self.top_value
-        if side[0] is not None and top[1] != PLACEHOLDER and bottom[1] != PLACEHOLDER:
+        if side[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and bottom[
+            1] != DROPDOWN_DEFAULT_TEXT:
             try:
                 from_unit = ControllerTemperature.unit_name_to_code[side[1]]
                 to_unit = ControllerTemperature.unit_name_to_code[opposite[1]]
@@ -123,7 +142,8 @@ class GUI:
     def continuous_conversion(self):
         top = self.get_input(True)
         bottom = self.get_input(False)
-        if top[0] is not None and top[1] != PLACEHOLDER and bottom[1] != PLACEHOLDER and top != self.top_full_input:
+        if top[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and bottom[
+            1] != DROPDOWN_DEFAULT_TEXT and top != self.top_full_input:
             print("TOP CHANGED")
             self.top_full_input = top.copy()
             try:
@@ -133,8 +153,8 @@ class GUI:
                 self.bottom_value.set(str(result))
             except ValueError:
                 pass
-        elif bottom[0] is not None and top[1] != PLACEHOLDER and \
-                bottom[1] != PLACEHOLDER and bottom != self.bottom_full_input:
+        elif bottom[0] is not None and top[1] != DROPDOWN_DEFAULT_TEXT and \
+                bottom[1] != DROPDOWN_DEFAULT_TEXT and bottom != self.bottom_full_input:
             print("BOTTOM CHANGED")
             self.bottom_full_input = bottom.copy()
             try:
@@ -148,3 +168,4 @@ class GUI:
 
 
 root = tk.Tk()
+root.configure(bg=DISCORD_DARK)
